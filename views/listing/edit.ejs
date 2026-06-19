@@ -1,0 +1,43 @@
+<%layout("/layouts/boilerplatecode")%>
+
+<body>
+
+    <div class="edit-wrapper">
+
+    <h2 class="text-center ">Edit listing  </h2>
+    <form class="needs-validation" novalidate  action="/edit/<%=listing.id%>?_method=put" method="post">
+            <div class="mb-3">
+                <label for="title" class="form-label">Edit Title</label>
+                <input type="text" class="form-control" id="title" name="title" aria-describedby="emailHelp"  value="<%=listing.title%>"  required>
+                <div class="invalid-feedback" class="form-text">Write your new title here...</div>
+                <div class="valid-feedback" class="form-text">New title added...</div>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">New image </label>
+                <input type="text" class="form-control" id="image" name="image" value="<%=listing.image%>"  required>
+                <div class="invalid-feedback" class="form-text">Enter new image link ..</div>
+                <div class="valid-feedback" class="form-text">New image added...</div>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Edit Description</label>
+                <input type="text" class="form-control" id="description" name="description" value="<%=listing.description%>" required>
+                <div class="invalid-feedback" class="form-text">Add new description here ...</div>
+                <div class="valid-feedback" class="form-text">New description added...</div>
+            </div>
+             <div class="mb-3" >
+                <label for="price" class="form-label">New Price</label> 
+                <input type="number" class="form-control" id="price" name="price" value="<%=listing.price%>" required>
+                <div class="invalid-feedback" class="form-text">Add new price here ...</div>
+                <div class="valid-feedback" class="form-text">New price added...</div>
+
+            </div>
+          
+            <button type="submit" class="btn btn-success mb-3">Edit </button>
+</form>
+             <a class="listing-link btn btn-primary bk-to-home " href="/listings">Back To Home</a> 
+         
+  </div>
+        <script src="/javascripts/validationscript.js"></script>
+
+    
+</body>

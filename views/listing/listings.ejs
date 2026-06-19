@@ -1,0 +1,31 @@
+<%layout("/layouts/boilerplatecode")%>
+<body>
+    
+    
+     <h1 class="text-center">All Listings</h1>
+     <div class="row row-cols-1g-4 row-cols-md-3 row-cols-sm-1 row-cols-xlsm-1'>">
+         
+         <% allistings.forEach((listing) => { %>
+            <div class="card col" style="width: 18rem;">
+                <a href="/listings/<%=listing._id%>" class="listing-link ">
+                <img src="<%=listing.image%>" class="card-img-top" alt="listingimg.jpg">
+                <div class="card-body">
+                    <h5 class="card-title"><%=listing.title%></h5>
+                    <p class="card-text"><%=listing.description%></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item price">&#8377; <%=listing.price.toLocaleString("en-IN")%></li>
+                </ul>
+                <div class="card-body">
+                    <a href="#" class="card-link"><%=listing.location%></a>
+                    <a href="#" class="card-link"><%=listing.country%></a>
+                </div>
+            </div>
+            </a>   
+            <% }) %>
+            
+        </div>
+   
+                  
+             
+</body>

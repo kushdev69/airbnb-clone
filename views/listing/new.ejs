@@ -1,0 +1,103 @@
+<%layout("/layouts/boilerplatecode")%>
+<body>
+  <div class="edit-wrapper">
+     <div class="row">
+     <div class="col-8 offset-2">
+    <form
+      action="/new/listing"
+      method="post"
+      class="needs-validation"
+      novalidate
+    >
+        <div>
+        <label class="form-label" for="title">Title</label>
+        <input
+          class="input-field form-control mb-2"
+          type="text"
+          id="title"
+          name="title"
+          placeholder="enter title.."
+          required
+        />
+         <div class="invalid-feedback">Please enter Title</div>
+         <div class="valid-feedback">Title looks good..</div>
+         </div>
+         <div>
+        <label  class="form-label" for="description">Description</label>
+
+        <textarea  class="input-field form-control mb-2"
+          type="text"
+          id="description"
+          name="description"
+          required >
+         
+        </textarea>
+         <div class="valid-feedback">Description is optional</div>
+
+        </div>
+        <div>
+        <label class="form-label" for="image">Image</label>
+
+        <input
+          class="input-field form-control mb-2"
+          type="text"
+           id="image"
+          name="image"
+          placeholder="paste image url here.."
+          required
+        />
+        <div class="invalid-feedback">Please enter correct image link</div>
+         <div class="valid-feedback">Image inserted..</div>
+        </div>
+        <div>
+        <label class="form-label" for="price">price</label>
+
+        <input
+          class="input-field form-control mb-2"
+          type="text"
+          name="price"
+           id="price"
+          placeholder="enter price.."
+          required
+        />
+        <div class="invalid-feedback">Please enter price </div>
+        <div class="valid-feedback">Price filled correctly..</div>
+        </div>
+        <div>
+        <label class="form-label" for="location">location </label>
+
+        <input
+          class="input-field form-control mb-2"
+          type="text"
+           id="location"
+          name="location"
+          placeholder="enter location.."
+          required
+        />
+        <div class="invalid-feedback">Please enter location</div>
+        <div class="valid-feedback">location added</div>
+        </div>
+        <div>
+        <label class="form-label" for="country">Country</label>
+
+        <input
+          class="input-field form-control mb-2"
+          type="text"
+           id="country"
+          name="country"
+          placeholder="enter country.."
+          required
+        />
+        <div class="invalid-feedback">Please enter country</div>
+        <div class="valid-feedback">Country added</div>
+        </div>
+        <button class="btn btn-success mb-3" type="submit">Create Listing</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+        <script src="/javascripts/validationscript.js"></script>
+
+
+</body>

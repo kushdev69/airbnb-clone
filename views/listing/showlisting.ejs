@@ -1,0 +1,28 @@
+<%layout("/layouts/boilerplatecode")%>
+<body>
+   
+         <div class="card individual-card" >
+                <img src="<%=listing.image%>" class="individual-img-top" alt="listingimg.jpg">
+                <div class="card-body">
+                    <div class="title-price">
+                    <h5 class="card-title title"><%=listing.title%></h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary pricee">&#8377; <%=listing.price.toLocaleString("en-IN")%></h6>
+                    </div>
+                   <p class="card-text description"><%=listing.description%></p>
+                    <div class="details">
+                        <a href="#" class="card-link location"><%=listing.location%></a>
+                        <a href="#" class="card-link country"><%=listing.country%></a>
+                    </div>
+                 </div>
+          </div>  
+
+          <div class="controls">
+                            <a href="/listings" class=" card-link btn btn-primary">Back to Home</a>
+                            <a href="/listings/<%=listing._id%>/edit" class="card-link btn btn-warning ">Edit listing</a>
+                            <a href="/listing/<%=listing._id%>/delete" class="card-link btn btn-danger">delete listing</a>
+               </div>
+            
+
+
+    
+</body>
