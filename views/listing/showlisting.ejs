@@ -1,6 +1,6 @@
 <%layout("/layouts/boilerplatecode")%>
 <body>
-   
+    <div class="showlisting-container ">
          <div class="card individual-card" >
                 <img src="<%=listing.image%>" class="individual-img-top" alt="listingimg.jpg">
                 <div class="card-body">
@@ -16,11 +16,67 @@
                  </div>
           </div>  
 
+
+                <div class="review-section">
+                     <div class="create-review">
+                    <h3>Write a Review</h3>
+                        <form  class="needs-validation" novalidate action="/listings/<%=listing._id%>/reviews" method="POST">
+                            <div class="mb-3">
+                                <div >
+                                <label for="review" class="form-label">Review</label>
+                                <textarea class="form-control" id="review" name="review[comment]" rows="3" required></textarea ">
+                                  <div class="invalid-feedback">Please write a valid review</div>
+                                  <div class="valid-feedback">Review added</div>
+                                </div> 
+                            </div>
+                            <div class="mb-3">
+                            <label for="rating" class="form-label">Rating</label>
+                            <select class="form-select" id="rating" name="review[rating]" required>
+                                <option value="">Select a rating</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                              <div class="invalid-feedback">Please select rating</div>
+                              <div class="valid-feedback">Thanks for rating us</div>
+                             </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </form>
+                
+                    </div>
+
+                    <div class="show-reviews">
+                            
+                            <h3>Reviews</h3>
+                            <% if (listing.reviews.length === 0) { %>
+                                <p>No reviews yet.</p>
+                            <% } else { %>
+                                <ul class="list-group">
+                                    <% listing.reviews.forEach((review)=> { %>
+                                        <li class="list-group-item">
+                                            <strong>Rating:</strong> <%= review.rating %> <br>
+                                            <strong>Review:</strong> <%= review.comment %>
+                                            <form action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=delete" method="POST">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete Review</button>
+                                            </form>
+                                        </li>
+                                    <% }); %>
+                                </ul>
+                            <% } %>
+                    </div>
+                </div>
+          </div>
+
+    
+
           <div class="controls">
                             <a href="/listings" class=" card-link btn btn-primary">Back to Home</a>
                             <a href="/listings/<%=listing._id%>/edit" class="card-link btn btn-warning ">Edit listing</a>
                             <a href="/listing/<%=listing._id%>/delete" class="card-link btn btn-danger">delete listing</a>
-               </div>
+           </div>
             
 
 

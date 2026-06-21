@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 const ejsmate = require("ejs-mate");
 const expressError= require("./utils/expressError.js");
 const wrapAsync= require("./utils/wrapAsync.js");
-const listingSchema= require("./schema.js");
+const {listingSchema, reviewSchema}= require("./schema.js");
+const reviewmodel= require("./models/reviews.js");
 
 
 require("./db.js");
@@ -27,8 +28,20 @@ app.get("/", (req, res) => {
 });
 
 
+
 function validateListing(req, res, next){
      const result= listingSchema.validate(req.body);
+    //  console.log(error);
+     if(result.error){
+       throw new expressError(400, result.error.details.map(el=>el.message).join(","));
+    }else{
+      next();
+    }
+   
+}
+
+function validateReviews(req, res, next){
+     const result= reviewSchema.validate(req.body);
     //  console.log(error);
      if(result.error){
        throw new expressError(400, result.error.details.map(el=>el.message).join(","));
@@ -73,7 +86,7 @@ app.post("/new/listing", validateListing, wrapAsync( async (req, res) => {
 //show listing route
 app.get("/listings/:id",wrapAsync( async (req, res) => {
   let {id}= req.params;
-  let listing = await listingmodel.findById(id);  
+  let listing = await listingmodel.findById(id).populate("reviews");  
   res.render("listing/showlisting",{listing});
 }));
 
@@ -97,17 +110,41 @@ app.put ("/edit/:id",validateListing, wrapAsync( async (req, res) => {
   res.redirect("/listings");
 }));
 
+//review route
+
+app.post("/listings/:id/reviews",validateReviews, wrapAsync( async (req, res) => {
+  let {id}= req.params;
+  let listing = await listingmodel.findById(id);    
+  let review = new reviewmodel(req.body.review);
+  listing.reviews.push(review);
+  await review.save();
+  await listing.save();
+  res.redirect(`/listings/${listing._id}`);
+}));
+
+
+//delete reviews
+app.delete("/listings/:id/reviews/:re_id" ,wrapAsync( async(req, res )=>{
+  let {id, re_id}= req.params;
+  let removefromlisting =await listingmodel.findByIdAndUpdate(id,{$pull:{reviews:re_id}});
+  let deletedreivew = await reviewmodel.findByIdAndDelete(re_id); 
+  res.redirect(`/listings/${id}`);
+  
+}));
+
+
 //delte listing
 
 app.get("/listing/:id/delete" ,wrapAsync( async(req, res )=>{
   let {id}= req.params;
-  let updatedlisting = await listingmodel.findOneAndDelete({ _id:id});  
+  let updatedlisting = await listingmodel.findByIdAndDelete(id);  
   res.redirect("/listings");
   
 }));
 
 //middleware to handle errors
 app.all("/*splat", (req, res, next) =>{
+ console.log("404 reached:", req.method, req.originalUrl);
  next( new expressError(404, "Page Not Found!"));
 
 })
