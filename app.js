@@ -2,17 +2,18 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const ejsmate = require("ejs-mate");
-const expressError= require("./utils/expressError.js");
-const wrapAsync= require("./utils/wrapAsync.js");
-const {listingSchema, reviewSchema}= require("./schema.js");
+const expressError= require("./utils/expressError.js");  // custom error class
+const {listingSchema, reviewSchema}= require("./schema.js"); //joi validation schema
 const reviewmodel= require("./models/reviews.js");
+const listings = require("./routes/listing.js");   //listing routes
+const reviews = require("./routes/review.js");   //reviews routes
 
 
 require("./db.js");
-const listingmodel = require("./models/listing.js");
+const listingmodel = require("./models/listings.js");
 const app = express();
 
-const methodoverride= require('method-override');
+const methodoverride= require('method-override');  
 app.use(methodoverride("_method"));
 
 app.use(express.urlencoded({ extended: true }));
@@ -23,124 +24,14 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.engine("ejs", ejsmate)
 
-app.get("/", (req, res) => {
-  res.redirect("/listings");
-});
+
+
+//routes
+app.use('/listings', listings);
+app.use('/listings/:id/reviews', reviews);
 
 
 
-function validateListing(req, res, next){
-     const result= listingSchema.validate(req.body);
-    //  console.log(error);
-     if(result.error){
-       throw new expressError(400, result.error.details.map(el=>el.message).join(","));
-    }else{
-      next();
-    }
-   
-}
-
-function validateReviews(req, res, next){
-     const result= reviewSchema.validate(req.body);
-    //  console.log(error);
-     if(result.error){
-       throw new expressError(400, result.error.details.map(el=>el.message).join(","));
-    }else{
-      next();
-    }
-   
-}
-
-//index route
-app.get("/listings", wrapAsync(async (req, res) => {
-  const allistings = await listingmodel.find({});
-  res.render("listing/listings", { allistings });
-}));
-
-
-//new listing get route
-app.get("/listings/new",wrapAsync( async (req, res) => {
-  res.render("listing/new",{});
-}));
-
-
-//new listing post route 
-app.post("/new/listing", validateListing, wrapAsync( async (req, res) => {
-
- 
-    let {title, description, image, price, location, country}= req.body;
-    let listing = await listingmodel.create(
-    {
-      title, 
-      description,
-      image,
-      price,
-      location,
-      country,
-    }
-  );  
-  res.redirect("/listings");
-}));
-
-
-//show listing route
-app.get("/listings/:id",wrapAsync( async (req, res) => {
-  let {id}= req.params;
-  let listing = await listingmodel.findById(id).populate("reviews");  
-  res.render("listing/showlisting",{listing});
-}));
-
-
-
-// edit listing get route
-app.get("/listings/:id/edit",wrapAsync( async (req, res) => {
-  let {id}= req.params;
-  let listing = await listingmodel.findById(id);  
-  res.render("listing/edit",{listing});
-}
-));
-
-// update route
-app.put ("/edit/:id",validateListing, wrapAsync( async (req, res) => {
-  let {id}= req.params;
-  let {title, description,image, price}= req.body;
-  let updatedlisting = await listingmodel.findOneAndUpdate({ _id:id}, 
-    {title, description, image, price},  { returnDocument:"after"} 
-  );  
-  res.redirect("/listings");
-}));
-
-//review route
-
-app.post("/listings/:id/reviews",validateReviews, wrapAsync( async (req, res) => {
-  let {id}= req.params;
-  let listing = await listingmodel.findById(id);    
-  let review = new reviewmodel(req.body.review);
-  listing.reviews.push(review);
-  await review.save();
-  await listing.save();
-  res.redirect(`/listings/${listing._id}`);
-}));
-
-
-//delete reviews
-app.delete("/listings/:id/reviews/:re_id" ,wrapAsync( async(req, res )=>{
-  let {id, re_id}= req.params;
-  let removefromlisting =await listingmodel.findByIdAndUpdate(id,{$pull:{reviews:re_id}});
-  let deletedreivew = await reviewmodel.findByIdAndDelete(re_id); 
-  res.redirect(`/listings/${id}`);
-  
-}));
-
-
-//delte listing
-
-app.get("/listing/:id/delete" ,wrapAsync( async(req, res )=>{
-  let {id}= req.params;
-  let updatedlisting = await listingmodel.findByIdAndDelete(id);  
-  res.redirect("/listings");
-  
-}));
 
 //middleware to handle errors
 app.all("/*splat", (req, res, next) =>{

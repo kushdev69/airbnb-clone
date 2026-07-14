@@ -5,7 +5,8 @@
     <div class="edit-wrapper">
 
     <h2 class="text-center ">Edit listing  </h2>
-    <form class="needs-validation" novalidate  action="/edit/<%=listing.id%>?_method=put" method="post">
+    <form class="needs-validation" novalidate  action="/listings/edit/<%=listing.id%>?_method=put" method="post">
+       
             <div class="mb-3">
                 <label for="title" class="form-label">Edit Title</label>
                 <input type="text" class="form-control" id="title" name="title" aria-describedby="emailHelp"  value="<%=listing.title%>"  required>
@@ -29,6 +30,20 @@
                 <input type="number" class="form-control" id="price" name="price" value="<%=listing.price%>" required>
                 <div class="invalid-feedback" class="form-text">Add new price here ...</div>
                 <div class="valid-feedback" class="form-text">New price added...</div>
+
+            </div>
+             <div class="mb-3" >
+                <label for="location" class="form-label">New location</label> 
+                <input type="text" class="form-control" id="location" name="location" value="<%=listing.location%>" required>
+                <div class="invalid-feedback" class="form-text">Add new location here ...</div>
+                <div class="valid-feedback" class="form-text">New location added...</div>
+
+            </div>
+             <div class="mb-3" >
+                <label for="country" class="form-label">New country</label> 
+                <input type="text" class="form-control" id="country" name="country" value="<%=listing.country%>" required>
+                <div class="invalid-feedback" class="form-text">Add new country here ...</div>
+                <div class="valid-feedback" class="form-text">New country added...</div>
 
             </div>
           

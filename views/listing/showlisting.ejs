@@ -59,7 +59,6 @@
                                             <strong>Rating:</strong> <%= review.rating %> <br>
                                             <strong>Review:</strong> <%= review.comment %>
                                             <form action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=delete" method="POST">
-                                                <input type="hidden" name="_method" value="DELETE">
                                                 <button type="submit" class="btn btn-danger btn-sm">Delete Review</button>
                                             </form>
                                         </li>
@@ -75,7 +74,7 @@
           <div class="controls">
                             <a href="/listings" class=" card-link btn btn-primary">Back to Home</a>
                             <a href="/listings/<%=listing._id%>/edit" class="card-link btn btn-warning ">Edit listing</a>
-                            <a href="/listing/<%=listing._id%>/delete" class="card-link btn btn-danger">delete listing</a>
+                            <a href="/listings/<%=listing._id%>/delete" class="card-link btn btn-danger">delete listing</a>
            </div>
             
 
