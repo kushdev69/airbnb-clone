@@ -2,6 +2,8 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const ejsmate = require("ejs-mate");
+const session = require("express-session");
+const flash = require("connect-flash");
 const expressError= require("./utils/expressError.js");  // custom error class
 const {listingSchema, reviewSchema}= require("./schema.js"); //joi validation schema
 const reviewmodel= require("./models/reviews.js");
@@ -24,9 +26,32 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.engine("ejs", ejsmate)
 
-
+const sessionConfig= {
+  secret:"myseretstringforuse",
+  resave:false,
+  saveUninitialized:true,
+  cookie:{
+    expires: Date.now()+ 7*24*60*60*1000,
+    maxAge:7*24*60*60*1000,
+    httpOnly:true,
+  }
+}
 
 //routes
+app.get("/", (async (req, res) => {
+     res.redirect("/listings");
+}));
+
+app.use(session(sessionConfig));
+app.use(flash());
+
+
+app.use((req, res ,next)=>{
+  res.locals.success= req.flash("success");
+  res.locals.error= req.flash("error");
+  next();
+})
+
 app.use('/listings', listings);
 app.use('/listings/:id/reviews', reviews);
 

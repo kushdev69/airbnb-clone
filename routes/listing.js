@@ -1,13 +1,12 @@
 const express = require("express");
 const expressError= require("../utils/expressError.js");
 const wrapAsync= require("../utils/wrapAsync.js");
+const flash = require("connect-flash");
 const {listingSchema, reviewSchema}= require("../schema.js"); //validation schema with joi
 const listingmodel = require("../models/listings.js");  //listing model mongoose schema
 
 
 const router= express.Router();
-
-
 
 function validateListing(req, res, next){
      const result= listingSchema.validate(req.body);
@@ -34,8 +33,6 @@ router.get("/new",wrapAsync( async (req, res) => {
 
 //new listing post route 
 router.post("/new", validateListing, wrapAsync( async (req, res) => {
-
- 
     let {title, description, image, price, location, country}= req.body;
     let listing = await listingmodel.create(
     {
@@ -47,6 +44,7 @@ router.post("/new", validateListing, wrapAsync( async (req, res) => {
       country,
     }
   );  
+  req.flash("success", "listing added successfully");
   res.redirect("/listings");
 }));
 
@@ -55,7 +53,12 @@ router.post("/new", validateListing, wrapAsync( async (req, res) => {
 router.get("/:id",wrapAsync( async (req, res) => {
   let {id}= req.params;
   let listing = await listingmodel.findById(id).populate("reviews");  
-  res.render("listing/showlisting",{listing});
+  if(!listing){
+    req.flash("error", "listing you are trying to see is not availabe ");
+    res.redirect("/listings");
+  }else{
+    res.render("listing/showlisting",{listing});
+  }  
 }));
 
 
@@ -75,6 +78,7 @@ router.put ("/edit/:id",validateListing, wrapAsync( async (req, res) => {
   let updatedlisting = await listingmodel.findOneAndUpdate({ _id:id}, 
     {title, description, image, price, country, location},  { returnDocument:"after"} 
   );  
+  req.flash("success", "listing Updated!");
   res.redirect("/listings");
 }));
 
@@ -83,6 +87,7 @@ router.put ("/edit/:id",validateListing, wrapAsync( async (req, res) => {
 router.get("/:id/delete" ,wrapAsync( async(req, res )=>{
   let {id}= req.params;
   let updatedlisting = await listingmodel.findByIdAndDelete(id);  
+  req.flash("error", "listing Deleted ");
   res.redirect("/listings");
   
 }));

@@ -1,13 +1,12 @@
  body {
    
-      display: flex;
+    display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
 .container {
       flex: 1;
-
 }
 
 .navbar{
@@ -16,7 +15,6 @@
 
 
 .center-nav{
-    
 display: flex;
 gap: 5rem;
 justify-content: space-between;
@@ -25,7 +23,6 @@ margin-left: 27rem;
 border: #E31C5E solid 2px;
 border-radius: 3rem;
 padding: 0rem 1.3rem ;
-
 }
 
 .topbtns{
@@ -51,8 +48,6 @@ padding-right:1rem;
 
 .text-center{
     color: #E31C5E;
-    margin-top: 7rem;
-
 }
 
 
@@ -107,9 +102,21 @@ padding-right:1rem;
    
 }
 
+.container-success{
+    margin-top:5rem;
+}
 
 
 /* listing and review form styling */
+
+.edit-wrapper {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.edit-wrapper .row {
+    margin-top: 0;
+}
 
 .showlisting-container{
    display:flex !important;
@@ -189,7 +196,7 @@ padding-right:1rem;
     display: flex;
     gap:14rem;
     position:absolute;
-    top:40rem;
+    top:46rem;
 }
 
 
