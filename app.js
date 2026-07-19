@@ -5,10 +5,15 @@ const ejsmate = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
 const expressError= require("./utils/expressError.js");  // custom error class
-const {listingSchema, reviewSchema}= require("./schema.js"); //joi validation schema
+const {listingSchema, reviewSchema}= require("./schema.joi.js"); //joi validation schema
 const reviewmodel= require("./models/reviews.js");
-const listings = require("./routes/listing.js");   //listing routes
-const reviews = require("./routes/review.js");   //reviews routes
+const listingsRouter = require("./routes/listing.js");   //listing routes
+const reviewsRouter = require("./routes/review.js");   //reviews routes
+const userRouter = require("./routes/user.js");   //users routes
+const user = require("./models/users.js")
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+
 
 
 require("./db.js");
@@ -16,6 +21,7 @@ const listingmodel = require("./models/listings.js");
 const app = express();
 
 const methodoverride= require('method-override');  
+const { register } = require("module");
 app.use(methodoverride("_method"));
 
 app.use(express.urlencoded({ extended: true }));
@@ -46,14 +52,32 @@ app.use(session(sessionConfig));
 app.use(flash());
 
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(user.authenticate()));
+
+passport.serializeUser(user.serializeUser());
+passport.deserializeUser(user.deserializeUser());
+
 app.use((req, res ,next)=>{
   res.locals.success= req.flash("success");
   res.locals.error= req.flash("error");
   next();
 })
 
-app.use('/listings', listings);
-app.use('/listings/:id/reviews', reviews);
+
+app.get("/demouser" ,async (req, res)=>{
+       let demouser = new user({
+        email:"new3@gmail.com",
+        username:"new3-user "
+       });
+    let registeruser = await user.register(demouser, "pass23" );
+   res.send(registeruser);
+});
+
+app.use('/users', userRouter);
+app.use('/listings', listingsRouter);
+app.use('/listings/:id/reviews', reviewsRouter);
 
 
 

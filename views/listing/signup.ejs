@@ -1,0 +1,30 @@
+<%layout("/layouts/boilerplatecode")%>
+
+<body>
+<div class="auth-page">
+	<div class="auth-card">
+		<p class="auth-kicker">Start here</p>
+		<h1>Sign up</h1>
+		<form class="auth-form needs-validation" action="/users/signup" method="post" novalidate>
+            <div>
+            <input class="auth-input form-control" type="text" name="username" placeholder="Username" required>
+              <div class="invalid-feedback" class="form-text">Enter a username</div>
+              <div class="valid-feedback" class="form-text">Username is available</div>
+            </div>
+            <div>
+			<input class="auth-input form-control" type="email" name="email" placeholder="Email" required>
+              <div class="invalid-feedback" class="form-text">Enter your email</div>
+              <div class="valid-feedback" class="form-text">Email looks good</div>
+            </div>
+            <div>
+			<input class="auth-input form-control" type="password" name="password" placeholder="Password" required>
+              <div class="invalid-feedback" class="form-text">Enter a password</div>
+              <div class="valid-feedback" class="form-text">generate a strong password</div>
+            </div>
+			<button class="auth-btn" type="submit">Create account</button>
+		</form>
+		<p class="auth-foot">Already have an account? <a href="/users/login">Login</a></p>
+	</div>
+</div>
+
+</body>

@@ -1,7 +1,7 @@
 const express = require("express");
 const expressError= require("../utils/expressError.js");
 const wrapAsync= require("../utils/wrapAsync.js");
-const { reviewSchema}= require("../schema.js"); //validation schema with joi
+const { reviewSchema}= require("../schema.joi.js"); //validation schema with joi
 const listingmodel = require("../models/listings.js");  //listing model mongoose schema
 const reviewmodel = require("../models/reviews.js");  //reviews model mongoose schema
 
