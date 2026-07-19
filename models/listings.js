@@ -16,8 +16,12 @@ let listingSchema= mongoose.Schema({
     country:String,
     reviews:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"review"
-    }]
+        ref:"review",
+    }],
+    owner:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"user",
+    }
 });
 
 

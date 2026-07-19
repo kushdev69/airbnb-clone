@@ -1,30 +1,29 @@
 <%layout("/layouts/boilerplatecode")%>
 
 <body>
-     <h1 class="text-center">All Listings</h1>
-     <div class=" listing-box row row-cols-1g-4 row-cols-md-3 row-cols-sm-1 row-cols-xlsm-1'>">
+     <h1 class="text-center mb-4">All Listings</h1>
+     <div class="listing-box row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
          
          <% allistings.forEach((listing) => { %>
-            <div class="card col" style="width: 18rem;">
-                <a href="/listings/<%=listing._id%>" class="listing-link ">
-                <img src="<%=listing.image%>" class="card-img-top" alt="listingimg.jpg">
-                <div class=" card-body listing-body">
-                    <h5 class="card-title"><%=listing.title%></h5>
-                     <ul class="list-group list-group-flush"></ul>
-                      <li  class="list-group-item price">&#8377; <%=listing.price.toLocaleString("en-IN")%>     </li>
-                     </ul>
-                </div>
-                 <p class="card-text"><%=listing.description%></p>
-                <div class="card-body listing-details">
-                    <a href="#" class="card-link"><%=listing.location%></a>
-                    <a href="#" class="card-link"><%=listing.country%></a>
+            <div class="col">
+                <div class="card h-100 listing-card">
+                    <a href="/listings/<%=listing._id%>" class="listing-link text-decoration-none text-dark">
+                        <img src="<%=listing.image%>" class="card-img-top listing-img" alt="<%=listing.title%>">
+                        <div class="card-body listing-body d-flex flex-column">
+                            <h5 class="card-title"><%=listing.title%></h5>
+                            <p class="card-text flex-grow-1"><%=listing.description%></p>
+                            <ul class="list-group list-group-flush mt-auto">
+                                <li class="list-group-item price fw-bold">&#8377; <%=listing.price.toLocaleString("en-IN")%></li>
+                            </ul>
+                        </div>
+                        <div class="card-body listing-details border-top">
+                            <span class="card-link"><i class="fa-solid fa-location-dot me-1"></i><%=listing.location%></span>
+                            <span class="card-link ms-2"><i class="fa-solid fa-flag me-1"></i><%=listing.country%></span>
+                        </div>
+                    </a>
                 </div>
             </div>
-            </a>   
             <% }) %>
             
         </div>
-   
-                  
-             
 </body>

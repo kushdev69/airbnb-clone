@@ -1,20 +1,68 @@
-<nav class="navbar navbar-expand-md bg-body-light border-bottom  z-3 fixed-top">
-  <div class="container-fluid">
-    <i class="fa-solid fa-compass" style="color: #e31c5e;"></i>
-    <a class="navbar-brand" href="#">Airbnb</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm fixed-top">
+  <div class="container-fluid px-3 px-md-4">
+    <a class="navbar-brand d-flex align-items-center gap-2 text-decoration-none" href="/listings">
+      <i class="fa-solid fa-compass fa-lg" style="color: #e31c5e"></i>
+      <span class="fw-bold fs-4" style="color: #e31c5e">Airbnb</span>
+    </a>
+
+    <button
+      class="navbar-toggler border-0"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNavbar"
+      aria-controls="mainNavbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse"  id="navbarNavAltMarkup">
-      <div class="navbar-nav ">
-        <div class="center-nav">
-        <a class="nav-link active" aria-current="page" href="/listings">Home</a> 
-        <a class="nav-link" href="#">experiences</a>
-        <a class="nav-link" href="#">services</a>
-        </div>
-        <div class="topbtns">
-        <a class="nav-link" href="/users/signup">Become a host</a>
-        <a class="nav-link" href="/listings/new">Create New listing</a>
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <!-- Center navigation links -->
+      <ul class="navbar-nav mx-auto mx-lg-0 gap-1 gap-lg-3">
+        <li class="nav-item">
+          <a class="nav-link active fw-medium" href="/listings">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-medium" href="#">Experiences</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-medium" href="#">Services</a>
+        </li>
+      </ul>
+
+      <!-- Right side action buttons + Account dropdown -->
+      <div class="d-flex flex-column flex-md-row gap-2 gap-md-3 ms-auto align-items-md-center">
+        <a class="btn btn-outline-danger rounded-pill px-4 py-2 fw-medium" href="/users/signup">
+          Become a host
+        </a>
+        <a class="btn btn-danger rounded-pill px-4 py-2 fw-medium" href="/listings/new">
+          Create Listing
+        </a>
+        
+        <!-- Account Dropdown -->
+        <div class="dropdown ms-md-2">
+          <button
+            class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-medium dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+              <% if(!currUser){%>
+            <i class="fa-solid fa-user me-1"></i> Account
+               <%} %> <%if(currUser) {%> 
+                 <i class="fa-solid fa-user me-1"></i>  <%=currUser.username%>
+                   <%}%>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3">
+            <% if(!currUser){%>
+            <li><a class="dropdown-item d-flex align-items-center gap-2" href="/users/login"><i class="fa-solid fa-sign-in-alt"></i> Sign in</a></li>
+            <li><a class="dropdown-item d-flex align-items-center gap-2" href="/users/signup"><i class="fa-solid fa-user-plus"></i> Sign up</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <%} %> <%if(currUser) {%> 
+            <li><a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="/users/logout"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
+             <%}%>
+          </ul>
         </div>
       </div>
     </div>
