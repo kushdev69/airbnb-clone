@@ -1,24 +1,13 @@
 const express = require("express");
-const expressError= require("../utils/expressError.js");
 const wrapAsync= require("../utils/wrapAsync.js");
 const flash = require("connect-flash");
 const passport = require("passport");
-const {listingSchema, reviewSchema}= require("../schema.joi.js"); //validation schema with joi
 const listingmodel = require("../models/listings.js");  //listing model mongoose schema
-const { isLoggedIn}= require("../middleware.js");
+const {validateListing , isOwner, isLoggedIn}= require("../middleware.js");
 
 
 const router= express.Router();
 
-function validateListing(req, res, next){
-     const result= listingSchema.validate(req.body);
-     if(result.error){
-       throw new expressError(400, result.error.details.map(el=>el.message).join(","));
-    }else{
-      next();
-    }
-   
-}
 
 //index route
 router.get("/", wrapAsync(async (req, res) => {
@@ -58,7 +47,7 @@ router.post("/new" ,isLoggedIn, validateListing, wrapAsync( async (req, res) => 
 //show listing route
 router.get("/:id"  , wrapAsync( async (req, res) => {
   let {id}= req.params;
-  let listing = await listingmodel.findById(id).populate("reviews").populate("owner");  
+  let listing = await listingmodel.findById(id).populate({path:"reviews", populate: {path:"author"}}).populate("owner");  
   if(!listing){
     req.flash("error", "listing you are trying to see is not availabe ");
     res.redirect("/listings");
@@ -70,17 +59,18 @@ router.get("/:id"  , wrapAsync( async (req, res) => {
 
 
 // edit listing get route
-router.get("/:id/edit" ,isLoggedIn ,wrapAsync( async (req, res) => {
+router.get("/:id/edit" ,isLoggedIn  ,isOwner,wrapAsync( async (req, res) => {
   let {id}= req.params;
-  let listing = await listingmodel.findById(id);  
+  let listing = await listingmodel.findById(id); 
   res.render("listing/edit",{listing});
 }
 ));
 
 // update route
-router.put ("/edit/:id"  ,isLoggedIn ,validateListing, wrapAsync( async (req, res) => {
+router.put ("/edit/:id"  ,isLoggedIn ,isOwner,validateListing, wrapAsync( async (req, res) => {
   let {id}= req.params;
   let {title, description,image, price , country, location}= req.body;
+  let listing = await  listingmodel.findById(id);
   let updatedlisting = await listingmodel.findOneAndUpdate({ _id:id}, 
     {title, description, image, price, country, location},  { returnDocument:"after"} 
   );  
@@ -90,7 +80,7 @@ router.put ("/edit/:id"  ,isLoggedIn ,validateListing, wrapAsync( async (req, re
 
 //delte listing
 
-router.get("/:id/delete"  ,isLoggedIn ,wrapAsync( async(req, res )=>{
+router.get("/:id/delete"  ,isLoggedIn ,isOwner ,wrapAsync( async(req, res )=>{
   let {id}= req.params;
   let updatedlisting = await listingmodel.findByIdAndDelete(id);  
   req.flash("error", "listing Deleted ");

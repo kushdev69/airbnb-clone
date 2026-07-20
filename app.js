@@ -22,6 +22,7 @@ const app = express();
 
 const methodoverride= require('method-override');  
 const { register } = require("module");
+const listing = require("./models/listings.js");
 app.use(methodoverride("_method"));
 
 app.use(express.urlencoded({ extended: true }));

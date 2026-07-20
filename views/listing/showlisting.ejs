@@ -4,7 +4,6 @@
   <div class="showlisting-container container py-5">
     <div class="row g-4">
 
-      <!-- Listing -->
       <div class="col-12 col-lg-7">
         <div class="card individual-card shadow-sm h-100">
           <img
@@ -32,7 +31,7 @@
             </p>
 
             <p class="card-text">
-              <i>Owned by:</i>
+              <i>Owned by :</i>
               <%= listing.owner.username %>
             </p>
 
@@ -52,10 +51,12 @@
         </div>
       </div>
 
-      <!-- Reviews -->
+
+      <!-- Reviews  section-->
       <div class="col-12 col-lg-5">
         <div class="review-section d-flex flex-column gap-4">
 
+          <%if(currUser){%>
           <!-- Review Form -->
           <div class="create-review card shadow-sm">
             <div class="card-body">
@@ -119,12 +120,12 @@
 
             </div>
           </div>
-
-          <!-- Reviews List -->
+          <%}%>
+       
           <div class="reviews-list card shadow-sm">
             <div class="card-body">
 
-              <h4 class="mb-3">Reviews</h4>
+              <h4 class="mb-3"> All Reviews</h4>
 
               <% if (listing.reviews && listing.reviews.length > 0) { %>
 
@@ -134,19 +135,20 @@
                     <div class="card-body">
 
                       <div class="d-flex justify-content-between align-items-start mb-2">
-
-                        <h6 class="card-title mb-0">
-                          <%= review.author.username %>
-                        </h6>
-
-                        <span class="badge bg-danger">
-                          <%= review.rating %>/5
-                        </span>
-
-                      </div>
-
                       <p class="card-text">
-                        <%= review.comment %>
+                       <i> <b> @<%= review.author.username%> </b> </i>
+                   
+                      </p>
+                        <span class="badge bg-danger">
+                          <%= review.createdAt.toLocaleString("en-In").slice(0,9)%>
+                        </span>
+                       
+                      </div>
+                      
+                      <p class="card-text text-muted">
+                       <%= review.comment %> <span class="badge bg-success">
+                         Rating:<%= review.rating%> 
+                        </span>
                       </p>
 
                       <form
@@ -154,12 +156,15 @@
                         method="POST"
                         class="d-inline"
                       >
+
+                      <%if(currUser && currUser._id.equals(review.author._id)){%>
                         <button
                           type="submit"
                           class="btn btn-danger btn-sm"
                         >
                           Delete
                         </button>
+                       <%}%>
                       </form>
 
                     </div>
@@ -189,7 +194,8 @@
       <a href="/listings" class="btn btn-primary">
         Back to Home
       </a>
-
+      
+      <%if(currUser && currUser._id.equals(listing.owner._id)){%>
       <a
         href="/listings/<%= listing._id %>/edit"
         class="btn btn-warning"
@@ -203,6 +209,7 @@
       >
         Delete Listing
       </a>
+      <%}%>
 
     </div>
 

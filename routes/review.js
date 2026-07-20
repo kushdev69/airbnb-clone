@@ -1,29 +1,18 @@
 const express = require("express");
-const expressError= require("../utils/expressError.js");
 const wrapAsync= require("../utils/wrapAsync.js");
-const { reviewSchema}= require("../schema.joi.js"); //validation schema with joi
 const listingmodel = require("../models/listings.js");  //listing model mongoose schema
 const reviewmodel = require("../models/reviews.js");  //reviews model mongoose schema
+const { isReviewOwner, validateReviews, isLoggedIn}= require("../middleware.js")
 
 
 const router= express.Router( {mergeParams:true} );
 
 
-function validateReviews(req, res, next){
-     const result= reviewSchema.validate(req.body);
-     if(result.error){
-       throw new expressError(400, result.error.details.map(el=>el.message).join(","));
-    }else{
-      next();
-    }
-   
-}
-
-
-router.post("/",validateReviews, wrapAsync( async (req, res) => {
+router.post("/",isLoggedIn ,validateReviews, wrapAsync( async (req, res) => {
   let {id}= req.params;
   let listing = await listingmodel.findById(id);    
   let review = new reviewmodel(req.body.review);
+  review.author= req.user._id;
   listing.reviews.push(review);
   await review.save();
   await listing.save();
@@ -33,7 +22,7 @@ router.post("/",validateReviews, wrapAsync( async (req, res) => {
 
 
 //delete reviews
-router.delete("/:re_id" ,wrapAsync( async(req, res )=>{
+router.delete("/:re_id" ,isReviewOwner ,wrapAsync( async(req, res )=>{
   let {id, re_id}= req.params;
   let removefromlisting =await listingmodel.findByIdAndUpdate(id,{$pull:{reviews:re_id}});
   let deletedreivew = await reviewmodel.findByIdAndDelete(re_id); 

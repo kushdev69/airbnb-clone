@@ -1,5 +1,4 @@
 const express = require("express");
-const expressError = require("../utils/expressError.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const flash = require("connect-flash");
 const passport = require("passport");
