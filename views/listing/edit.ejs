@@ -5,7 +5,7 @@
     <div class="edit-wrapper">
 
     <h2 class="text-center ">Edit listing  </h2>
-    <form class="needs-validation" novalidate  action="/listings/edit/<%=listing.id%>?_method=put" method="post">
+    <form class="needs-validation" novalidate  action="/listings/<%=listing.id%>/edit/?_method=put" method="post">
        
             <div class="mb-3">
                 <label for="title" class="form-label">Edit Title</label>
