@@ -8,6 +8,7 @@
       method="post"
       class="needs-validation"
       novalidate
+      enctype="multipart/form-data"
     >
         <div>
         <label class="form-label" for="title">Title</label>
@@ -40,10 +41,9 @@
 
         <input
           class="input-field form-control mb-2"
-          type="text"
+          type="file"
            id="image"
           name="image"
-          placeholder="paste image url here.."
           required
         />
         <div class="invalid-feedback">Please enter correct image link</div>

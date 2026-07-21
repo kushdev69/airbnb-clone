@@ -14,18 +14,23 @@ module.exports.newListingGet =async (req, res) => {
 };
 
 module.exports.newListingPost =async (req, res) => {
-    let {title, description, image, price, location, country}= req.body;
+    let {title, description, price, location, country}= req.body;
+        let {originalname ,url} = req.file;
+    
     let newlisting = await listingmodel.create(
     {
       title, 
       description,
-      image,
       price,
       location,
       country,
     }
   );  
-    newlisting.owner= req.user._id;
+  newlisting.image={
+        url:url,
+        filename:originalname
+      };
+  newlisting.owner= req.user._id;
   await newlisting.save();
   req.flash("success", "listing added successfully");
   res.redirect("/listings");

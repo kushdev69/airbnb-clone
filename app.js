@@ -1,3 +1,5 @@
+require("dotenv").config();
+require("./db.js");
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -15,8 +17,6 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
 
-
-require("./db.js");
 const listingmodel = require("./models/listings.js");
 const app = express();
 

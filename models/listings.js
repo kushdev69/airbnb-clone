@@ -8,8 +8,8 @@ let listingSchema= mongoose.Schema({
      },
     description:String,
     image:{
-          type:String,
-         set: (v)=>v===""?"koistring":v,
+          url:String,
+          filename:String
      },
     price:Number,
     location:String,

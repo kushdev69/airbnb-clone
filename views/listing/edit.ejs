@@ -5,7 +5,7 @@
     <div class="edit-wrapper">
 
     <h2 class="text-center ">Edit listing  </h2>
-    <form class="needs-validation" novalidate  action="/listings/<%=listing.id%>/edit/?_method=put" method="post">
+    <form class="needs-validation" novalidate  action="/listings/<%=listing.id%>/edit/?_method=put" method="post" enctype="multipart/form-data">
        
             <div class="mb-3">
                 <label for="title" class="form-label">Edit Title</label>
@@ -15,8 +15,8 @@
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">New image </label>
-                <input type="text" class="form-control" id="image" name="image" value="<%=listing.image%>"  required>
-                <div class="invalid-feedback" class="form-text">Enter new image link ..</div>
+                <input type="text" class="form-control" id="image" name="image" value="<%=listing.image%>"  required disabled>
+                <div class="invalid-feedback" class="form-text">Enter new image here ..</div>
                 <div class="valid-feedback" class="form-text">New image added...</div>
             </div>
             <div class="mb-3">
