@@ -51,7 +51,10 @@ module.exports.showListing =async (req, res) => {
 module.exports.updateListingGet=async (req, res) => {
   let {id}= req.params;
   let listing = await listingmodel.findById(id); 
-  res.render("listing/edit",{listing});
+  let originalurl= listing.image.url;
+  originalurl= originalurl.replace("/uploads", "/uploads/h_100");
+  console.log(originalurl )
+  res.render("listing/edit",{listing , originalurl});
 };
 
 module.exports.updateListingPost= async (req, res) => {
@@ -61,6 +64,15 @@ module.exports.updateListingPost= async (req, res) => {
   let updatedlisting = await listingmodel.findOneAndUpdate({ _id:id}, 
     {title, description, image, price, country, location},  { returnDocument:"after"} 
   );  
+
+  if(typeof req.file !== "undefined"){
+    let {originalname, url}= req.file;
+    updatedlisting.image={
+      url:url,
+      filename:originalname
+    }
+  }
+  await updatedlisting.save();
   req.flash("success", "listing Updated!");
   res.redirect("/listings");
 };

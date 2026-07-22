@@ -1,3 +1,5 @@
+const dns = require('dns');
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 require("dotenv").config();
 require("./db.js");
 const express = require("express");
@@ -5,6 +7,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const ejsmate = require("ejs-mate");
 const session = require("express-session");
+const { MongoStore } = require("connect-mongo");
 const flash = require("connect-flash");
 const expressError= require("./utils/expressError.js");  // custom error class
 const {listingSchema, reviewSchema}= require("./schema.joi.js"); //joi validation schema
@@ -33,8 +36,20 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.engine("ejs", ejsmate)
 
+const store= MongoStore.create({
+    mongoUrl:process.env.ATLASDB_URL,
+    crypto:{
+      secret:process.env.SECRET,
+    },
+    touchAfter:24*3600
+});
+
+store.on("error", (err)=>{
+  console.log("session store error:", err);
+});
 const sessionConfig= {
-  secret:"myseretstringforuse",
+  store,
+  secret:process.env.SECRET,
   resave:false,
   saveUninitialized:true,
   cookie:{
