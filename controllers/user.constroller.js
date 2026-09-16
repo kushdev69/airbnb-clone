@@ -1,10 +1,6 @@
 
 const user = require('../models/users.js')
 
-module.exports.signupGet =(req, res) => {
-  res.render("listing/signup");
-};
-
 module.exports.signupPost = async (req, res ,next) => {
     try {
       let { username, email, password } = req.body;
@@ -14,23 +10,23 @@ module.exports.signupPost = async (req, res ,next) => {
         if(err){
          return next(err);
         }
-         req.flash("success", "user created successfully !")
-         res.redirect("/listings");
+         res.status(201).json({ user: registeruser, message: "User created successfully" });
       });
     } catch (e) {
-      req.flash("error", e.message);
-      res.redirect("/users/signup");
+      res.status(400).json({ message: e.message });
     }
 };
 
-module.exports.loginGet =(req, res) => {
-  res.render("listing/login");
+module.exports.loginPost =(req, res) => {
+   res.json({ user: req.user, message: "User logged in successfully" });
 };
 
-module.exports.loginPost =(req, res) => {
-   req.flash("success","user logged in successfully");
-   let redirectUrl = res.locals.redirectUrl || "/listings";
-   res.redirect(redirectUrl);
+module.exports.getCurrentUser = (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({ user: req.user });
+  } else {
+    res.status(401).json({ message: "Not authenticated" });
+  }
 };
 
 module.exports.logout =(req, res,  next) => {
@@ -38,7 +34,6 @@ module.exports.logout =(req, res,  next) => {
     if(err){
      return next(err);
     } 
-    req.flash("success", "user logged out !")
-    res.redirect("/listings");
+    res.json({ message: "User logged out successfully" });
   })
 };

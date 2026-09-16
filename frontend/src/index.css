@@ -1,0 +1,6 @@
+@import './styling.css';
+@import './starrating.css';
+
+#root {
+  min-height: 100vh;
+}

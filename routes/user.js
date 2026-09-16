@@ -1,23 +1,36 @@
 const express = require("express");
 const wrapAsync = require("../utils/wrapAsync.js");
-const flash = require("connect-flash");
 const passport = require("passport");
-const {saveRedirectUrl, isLoggedIn } = require("../middleware.js");
-const {signupGet, signupPost, loginGet, loginPost, logout}= require('../controllers/user.constroller.js');
+const {saveRedirectUrl} = require("../middleware.js");
+const {signupPost, loginPost, logout, getCurrentUser}= require('../controllers/user.constroller.js');
 const router = express.Router();
 
-// users/signup route get and post 
-router.route("/signup")
-.get(signupGet)
-.post( wrapAsync(signupPost));
+// POST signup
+router.post("/signup", wrapAsync(signupPost));
 
-//users/login route get and post 
-router.route("/login")
-.get(loginGet )
-.post(saveRedirectUrl, passport.authenticate("local", {failureRedirect: "/users/login",failureFlash: true,
-  }),loginPost );
+// POST login
+const authenticateUser = (req, res, next) => {
+	passport.authenticate("local", (err, authenticatedUser, info) => {
+		if (err) return next(err);
+		if (!authenticatedUser) {
+			return res.status(401).json({
+				message: info?.message || "Invalid username or password"
+			});
+		}
 
-//logout 
-router.get("/logout", logout );
+		req.logIn(authenticatedUser, (loginError) => {
+			if (loginError) return next(loginError);
+			next();
+		});
+	})(req, res, next);
+};
+
+router.post("/login", saveRedirectUrl, authenticateUser, loginPost);
+
+// GET current user
+router.get("/me", getCurrentUser);
+
+// POST logout
+router.post("/logout", logout);
 
 module.exports = router;

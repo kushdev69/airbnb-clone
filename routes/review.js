@@ -5,11 +5,11 @@ const {createReview, deleteReview} =require('../controllers/review.controller.js
 
 const router= express.Router( {mergeParams:true} );
 
-//create review path stars like listings/:id/reviews.....
-router.post("/",isLoggedIn ,validateReviews, wrapAsync(createReview));
+// POST create review
+router.post("/", isLoggedIn, validateReviews, wrapAsync(createReview));
 
-//delete reviews
-router.delete("/:re_id" ,isReviewOwner ,wrapAsync(deleteReview));
+// DELETE review
+router.delete("/:re_id", isReviewOwner, wrapAsync(deleteReview));
 
 
 module.exports= router;
