@@ -30,6 +30,8 @@ export const listingAPI = {
     headers: { 'Content-Type': 'multipart/form-data' }
   }),
   delete: (id) => api.delete(`/listings/${id}`),
+  checkAvailability: (id, dates) => api.get(`/listings/${id}/availability`, { params: dates }),
+  book: (id, dates) => api.post(`/listings/${id}/book`, dates),
 };
 
 // Review API calls

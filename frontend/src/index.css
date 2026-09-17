@@ -4,3 +4,8 @@
 #root {
   min-height: 100vh;
 }
+
+.booking-page { max-width: 720px; margin: auto; }
+.booking-panel { border: 1px solid #e5e5e5; border-radius: 8px; padding: 2rem; }
+.availability { color: #6c757d; }
+.availability.available { color: #198754; }

@@ -120,6 +120,9 @@ function ShowListing() {
               <p className="card-text">
                 <i>Owned by :</i> {listing.owner?.username}
               </p>
+              {!isOwner && (
+                <Link to={`/listings/${id}/book`} className="btn btn-danger mb-3">Book this stay</Link>
+              )}
               <div className="details d-flex flex-wrap gap-2 mt-auto">
                 <a href="#" className="card-link location">
                   <i className="fa-solid fa-location-dot me-1"></i>
