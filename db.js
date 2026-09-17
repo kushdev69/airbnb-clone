@@ -6,5 +6,5 @@ mongoose.connect(process.env.ATLASDB_URL)
     console.log("mongodb is connected !");
 })
 .catch((err)=>{
-    console.log(`${err}`);
+    console.log(`mongodb connection failed: ${err.message}`);
 });

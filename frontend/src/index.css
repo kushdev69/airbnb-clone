@@ -9,3 +9,14 @@
 .booking-panel { border: 1px solid #e5e5e5; border-radius: 8px; padding: 2rem; }
 .availability { color: #6c757d; }
 .availability.available { color: #198754; }
+.booking-modal-backdrop { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 1rem; background: rgb(0 0 0 / 45%); }
+.booking-confirmation { width: min(100%, 460px); padding: 2rem; border-radius: 8px; background: #fff; box-shadow: 0 1rem 3rem rgb(0 0 0 / 20%); }
+.booking-reference { margin: 1.5rem 0; padding: 1rem; border: 1px dashed #dc3545; color: #dc3545; font-size: 1.5rem; font-weight: 700; letter-spacing: .08em; text-align: center; }
+.booking-summary { margin-bottom: 1.5rem; }
+.booking-summary div { display: flex; justify-content: space-between; gap: 1rem; padding: .5rem 0; border-bottom: 1px solid #eee; }
+.booking-summary dt { color: #6c757d; }
+.booking-summary dd { margin: 0; text-align: right; }
+.booking-card { overflow: hidden; height: 100%; border: 1px solid #e5e5e5; border-radius: 8px; background: #fff; }
+.booking-card img { width: 100%; height: 180px; object-fit: cover; }
+.booking-card-body { padding: 1.25rem; }
+.booking-card h2 { font-size: 1.2rem; }

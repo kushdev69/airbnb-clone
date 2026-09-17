@@ -11,6 +11,7 @@ import EditListing from './pages/EditListing';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Booking from './pages/Booking';
+import MyBookings from './pages/MyBookings';
 import { useAuth } from './context/AuthContext';
 import { useLocation } from 'react-router-dom';
 import './index.css';
@@ -46,6 +47,7 @@ function App() {
                 <Route path="/listings/new" element={<PrivateRoute><NewListing /></PrivateRoute>} />
                 <Route path="/listings/:id" element={<ShowListing />} />
                 <Route path="/listings/:id/book" element={<PrivateRoute><Booking /></PrivateRoute>} />
+                <Route path="/bookings" element={<PrivateRoute><MyBookings /></PrivateRoute>} />
                 <Route path="/listings/:id/edit" element={<PrivateRoute><EditListing /></PrivateRoute>} />
                 <Route path="/users/login" element={<Login />} />
                 <Route path="/users/signup" element={<Signup />} />

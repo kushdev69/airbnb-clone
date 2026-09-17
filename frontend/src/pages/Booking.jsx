@@ -11,6 +11,7 @@ function Booking() {
   const [dates, setDates] = useState({ checkIn: '', checkOut: '' });
   const [available, setAvailable] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [confirmation, setConfirmation] = useState(null);
 
   useEffect(() => {
     listingAPI.getById(id).then(({ data }) => setListing(data)).catch(() => navigate('/listings'));
@@ -34,9 +35,8 @@ function Booking() {
     if (available !== true) return addFlash('error', 'Choose available dates first');
     try {
       setSubmitting(true);
-      await listingAPI.book(id, dates);
-      addFlash('success', 'Booking confirmed with Cash on Delivery');
-      navigate(`/listings/${id}`);
+      const { data } = await listingAPI.book(id, dates);
+      setConfirmation(data);
     } catch (err) {
       setAvailable(false);
       addFlash('error', err.response?.data?.message || 'Booking failed');
@@ -48,7 +48,7 @@ function Booking() {
   if (!listing) return <div className="text-center py-5">Loading...</div>;
 
   return (
-    <main className="booking-page py-5">
+    <main className="booking-page py-5" aria-label="Booking">
       <Link to={`/listings/${id}`} className="text-decoration-none">&larr; Back to listing</Link>
       <div className="booking-panel mt-4">
         <h1>Book your stay</h1>
@@ -85,6 +85,24 @@ function Booking() {
           </button>
         </form>
       </div>
+      {confirmation && (
+        <div className="booking-modal-backdrop" role="presentation">
+          <section className="booking-confirmation" role="dialog" aria-modal="true" aria-labelledby="booking-confirmed">
+            <p className="text-success mb-2">Booking confirmed</p>
+            <h2 id="booking-confirmed">Your stay is reserved</h2>
+            <p className="text-muted">Keep this reference number for your records.</p>
+            <div className="booking-reference">{confirmation.reference}</div>
+            <dl className="booking-summary">
+              <div><dt>Listing</dt><dd>{listing.title}</dd></div>
+              <div><dt>Dates</dt><dd>{dates.checkIn} to {dates.checkOut}</dd></div>
+              <div><dt>Payment</dt><dd>Cash on Delivery</dd></div>
+            </dl>
+            <button className="btn btn-danger w-100" onClick={() => navigate(`/listings/${id}`)}>
+              Back to listing
+            </button>
+          </section>
+        </div>
+      )}
     </main>
   );
 }

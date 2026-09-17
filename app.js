@@ -1,8 +1,6 @@
 ﻿const dns = require('dns');
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 require("dotenv").config({ path: __dirname + '/.env' });
-console.log('ATLASDB_URL:', process.env.ATLASDB_URL);
-console.log('SECRET:', process.env.SECRET);
 require("./db.js");
 const express = require("express");
 const path = require("path");

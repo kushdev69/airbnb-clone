@@ -8,7 +8,7 @@ function Footer() {
           <i className="fa-brands fa-square-linkedin"></i>
         </div>
         <div className="f-brand">
-          &#169 Airbnb private limited
+         <p>&#169 Airbnb private limited</p>
         </div>
         <div className="f-links">
           <a href="/privacy">Privacy</a>

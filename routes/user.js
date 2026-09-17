@@ -1,8 +1,9 @@
 const express = require("express");
 const wrapAsync = require("../utils/wrapAsync.js");
 const passport = require("passport");
-const {saveRedirectUrl} = require("../middleware.js");
+const {saveRedirectUrl, isLoggedIn} = require("../middleware.js");
 const {signupPost, loginPost, logout, getCurrentUser}= require('../controllers/user.constroller.js');
+const { userBookings } = require('../controllers/booking.controller.js');
 const router = express.Router();
 
 // POST signup
@@ -29,6 +30,7 @@ router.post("/login", saveRedirectUrl, authenticateUser, loginPost);
 
 // GET current user
 router.get("/me", getCurrentUser);
+router.get("/bookings", isLoggedIn, wrapAsync(userBookings));
 
 // POST logout
 router.post("/logout", logout);

@@ -16,6 +16,13 @@ const overlap = (listing, start, end) => bookingmodel.findOne({
   checkOut: { $gt: start }
 });
 
+module.exports.userBookings = async (req, res) => {
+  const bookings = await bookingmodel.find({ guest: req.user._id })
+    .populate('listing', 'title location country image price')
+    .sort({ checkIn: 1 });
+  res.json(bookings);
+};
+
 module.exports.checkAvailability = async (req, res) => {
   const range = dates(req.query.checkIn, req.query.checkOut);
   if (!range) return res.status(400).json({ available: false, message: 'Choose a valid date range' });

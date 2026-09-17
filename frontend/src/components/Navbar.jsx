@@ -90,6 +90,11 @@ function Navbar() {
                 ) : (
                   <>
                     <li>
+                      <Link className="dropdown-item d-flex align-items-center gap-2" to="/bookings">
+                        <i className="fa-solid fa-calendar-check"></i> My bookings
+                      </Link>
+                    </li>
+                    <li>
                       <button 
                         className="dropdown-item d-flex align-items-center gap-2 text-danger"
                         onClick={handleLogout}
