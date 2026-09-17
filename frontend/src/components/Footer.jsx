@@ -1,7 +1,7 @@
 function Footer() {
   return (
     <footer>
-      <div className="f-info sticky-bottom ">
+      <div className="f-info">
         <div className="f-socialmedia">
           <i className="fa-brands fa-square-facebook"></i>
           <i className="fa-brands fa-square-instagram"></i>

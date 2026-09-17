@@ -6,6 +6,13 @@ body {
   padding-top: 76px; /* Account for fixed navbar */
 }
 
+#root,
+.app {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
 .container {
   flex: 1;
 }
